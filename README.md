@@ -72,3 +72,21 @@ O acesso inicial é privado. Enviar alterações para este GitHub não atualiza 
 ## Verificações
 
 A versão inicial passou por verificação de sintaxe de `app.js` e `config.js` e conferência dos caminhos de recursos referenciados no HTML. A publicação em Sites foi concluída. A tentativa de teste visual automatizado não pôde executar por ausência do navegador do Playwright; a revisão visual em navegador permanece recomendada.
+
+## Publicar na Vercel
+
+O arquivo `vercel.json` na raiz define este projeto como site estático, sem instalação ou build, e aponta o diretório público para `dist`.
+
+No projeto da Vercel, confira em **Settings → Build and Deployment**:
+
+| Configuração | Valor |
+| --- | --- |
+| Root Directory | Raiz do repositório (deixe vazio; não selecione `dist`) |
+| Framework Preset | Other |
+| Build Command | Vazio |
+| Install Command | Vazio |
+| Output Directory | `dist` |
+
+A raiz deve ser o repositório para que a Vercel leia o `vercel.json`. Com o GitHub conectado à Vercel, commits na branch de produção configurada podem disparar novas publicações. Se não houver nova publicação automática, faça **Redeploy** usando o commit mais recente de `main`. A configuração vale para novas publicações; uma publicação antiga não é alterada retroativamente.
+
+Se aparecer 404, confirme o Root Directory e o Output Directory. Se a publicação falhar, consulte o Build Log. O endereço e os logs da publicação na conta Vercel não foram verificados a partir deste repositório.
