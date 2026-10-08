@@ -25,11 +25,98 @@ function mock(tipo){
  const demos={institucional:'<div class="mock-nav"><b>studio.</b><span>Sobre &nbsp; Serviços &nbsp; Contato</span></div><div class="mock-title">Uma boa ideia.<br>Uma nova presença.</div><span class="mock-button">Conheça nossa empresa</span>',landing:'<div class="mock-nav"><b>nova /</b><span>Uma ideia. Novas possibilidades.</span></div><div class="mock-title">Seu próximo passo<br>começa aqui.</div><span class="mock-button">Quero conhecer</span>',app:'<div class="mock-nav"><b>workspace</b><span>Visão geral</span></div><div class="stats"><b><small>Projetos</small>12</b><b><small>Concluídos</small>08</b><b><small>Em andamento</small>04</b></div><div class="bars"><i style="height:35%"></i><i style="height:55%"></i><i style="height:45%"></i><i style="height:80%"></i><i style="height:65%"></i><i style="height:100%"></i></div>'};
  box.innerHTML='<div class="mock-bar"><i></i><i></i><i></i></div><div class="mock-body">'+(demos[tipo]||demos.institucional)+'</div>';return box;
 }
+
+function previewProjeto(p, real) {
+  const box = document.createElement('div');
+  box.className = 'project-preview';
+  const visual = document.createElement('div');
+  visual.className = 'project-image ' + (p.modelo || '');
+  const controls = document.createElement('div');
+  controls.className = 'preview-controls';
+  box.append(visual, controls);
+  let observer;
+  function limpar() {
+    if (observer) observer.disconnect();
+    visual.replaceChildren();
+    controls.replaceChildren();
+  }
+  function linkExterno() {
+    const a = document.createElement('a');
+    a.href = p.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.textContent = 'Abrir site';
+    return a;
+  }
+  function mensagem(texto) {
+    const note = document.createElement('p');
+    note.className = 'preview-empty';
+    note.textContent = texto;
+    visual.replaceChildren(note);
+  }
+  function imagem() {
+    limpar();
+    if (p.imagem) {
+      const img = document.createElement('img');
+      img.src = p.imagem;
+      img.alt = 'Prévia de ' + p.titulo;
+      img.loading = 'lazy';
+      img.addEventListener('error', () => mensagem('Imagem indisponível. Abra o site para conhecer o projeto.'), { once: true });
+      visual.append(img);
+    } else {
+      mensagem('Este site pode bloquear a prévia incorporada. Conheça o projeto em uma nova aba.');
+    }
+    if (real) {
+      const voltar = document.createElement('button');
+      voltar.type = 'button';
+      voltar.textContent = 'Tentar prévia ao vivo';
+      voltar.addEventListener('click', aoVivo);
+      controls.append(voltar, linkExterno());
+    }
+  }
+  function aoVivo() {
+    limpar();
+    const url = new URL(p.url, location.href);
+    if (location.protocol === 'https:' && url.protocol !== 'https:') {
+      imagem();
+      return;
+    }
+    const frame = document.createElement('iframe');
+    frame.className = 'live-preview';
+    frame.title = 'Prévia ao vivo de ' + p.titulo;
+    frame.loading = 'lazy';
+    frame.referrerPolicy = 'no-referrer';
+    frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    frame.tabIndex = -1;
+    frame.src = url.href;
+    visual.append(frame);
+    const dimensionar = () => {
+      const escala = visual.clientWidth / 1280;
+      if (!escala) return;
+      frame.style.width = '1280px';
+      frame.style.height = Math.ceil(visual.clientHeight / escala) + 'px';
+      frame.style.transform = 'scale(' + escala + ')';
+    };
+    observer = new ResizeObserver(dimensionar);
+    observer.observe(visual);
+    const label = document.createElement('span');
+    label.textContent = 'Prévia ao vivo';
+    const alternativa = document.createElement('button');
+    alternativa.type = 'button';
+    alternativa.textContent = p.imagem ? 'Ver imagem' : 'Prévia não abriu?';
+    alternativa.addEventListener('click', imagem);
+    controls.append(label, alternativa);
+  }
+  if (real && p.preview !== 'imagem') aoVivo();
+  else if (p.imagem) imagem();
+  else visual.append(mock(p.modelo));
+  return box;
+}
+
 c.projetos.forEach((p,i)=>{
  const real=Boolean(p.url && urlValida(p.url));
  const article=document.createElement('article');article.className='project';
- const visual=document.createElement('div');visual.className='project-image '+(p.modelo||'');
- if(p.imagem){const img=document.createElement('img');img.src=p.imagem;img.alt='Prévia de '+p.titulo;img.loading='lazy';img.addEventListener('error',()=>{img.remove();visual.append(mock(p.modelo));},{once:true});visual.append(img);}else visual.append(mock(p.modelo));
+ const visual=previewProjeto(p,real);
  const body=document.createElement('div');body.className='project-content';
  const meta=document.createElement('div');meta.className='project-index';meta.textContent=String(i+1).padStart(2,'0')+' / '+p.categoria.toUpperCase();
  if(!real){const badge=document.createElement('span');badge.className='model-badge';badge.textContent='MODELO';meta.append(badge);}
