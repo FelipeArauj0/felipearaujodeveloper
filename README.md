@@ -115,3 +115,14 @@ Ao preencher `url`, o cartão carrega o site em um iframe reduzido. Não é prec
 - A imagem opcional deve existir em `dist/assets` e o nome precisa coincidir, inclusive maiúsculas e minúsculas.
 - Para usar apenas imagem em determinado projeto, adicione `preview: 'imagem'`. O botão **Tentar prévia ao vivo** continua disponível.
 - Para navegar e interagir com o projeto, use **Ver site**. O iframe é apenas uma prévia visual.
+
+## Três projetos no início e página completa
+
+A página inicial exibe os **três primeiros itens** da lista `projetos`, respeitando a ordem definida em `dist/config.js`.
+
+- Com até três itens, não há botão “Ver mais”.
+- Com quatro ou mais, “Ver mais” aparece automaticamente e abre `projetos.html`.
+- A página completa usa a mesma lista e apresenta todos os projetos em duas colunas no desktop e uma no celular.
+- As imagens clicáveis, animações, prévias e botões de acesso continuam funcionando nas duas páginas.
+- A contagem considera cada objeto cadastrado na lista, inclusive modelos sem URL. Remova modelos que não queira apresentar.
+- Não é preciso criar os cartões ou alterar o HTML ao adicionar um projeto. Basta editar a lista e publicar a alteração.
