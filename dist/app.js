@@ -29,8 +29,14 @@ function mock(tipo){
 function previewProjeto(p, real) {
   const box = document.createElement('div');
   box.className = 'project-preview';
-  const visual = document.createElement('div');
+  const visual = document.createElement(real ? 'a' : 'div');
   visual.className = 'project-image ' + (p.modelo || '');
+  if (real) {
+    visual.href = p.url;
+    visual.target = '_blank';
+    visual.rel = 'noopener noreferrer';
+    visual.setAttribute('aria-label', 'Abrir ' + p.titulo + ' em uma nova aba');
+  }
   const controls = document.createElement('div');
   controls.className = 'preview-controls';
   box.append(visual, controls);
