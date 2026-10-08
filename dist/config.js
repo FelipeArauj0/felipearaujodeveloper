@@ -11,14 +11,17 @@ window.PORTFOLIO = {
   linkedin: 'https://www.linkedin.com/in/felipe-araujo-9303b720b/',
   mensagemWhatsApp: 'Olá, Felipe! Gostaria de conversar sobre um projeto.',
   // Para adicionar um site, duplique um objeto e preencha os campos.
-  // Coloque a captura de tela em dist/assets e informe o caminho em imagem.
+  // Ao preencher url, o cartão tenta mostrar o site ao vivo, sem precisar de imagem.
+  // imagem é opcional: use como alternativa quando o site bloquear a prévia.
+  // Para sempre usar a captura, adicione preview: 'imagem' ao projeto.
+  // Use o endereço público de produção do site (https://...), sem login.
   // Ao preencher url, o botão passa a ser “Ver site”.
   projetos: [
     { 
       titulo: 'Seu site institucional', 
       categoria: 'Site institucional', 
       descricao: 'Uma apresentação clara para sua empresa, serviços e canais de contato.', 
-      imagem: 'assets/capacitaAi.png', 
+      imagem: 'assets/capacitaAI.png', 
       url: 'https://capacita-ai-flow-daaox5kti-felipes-projects-af697b65.vercel.app/', modelo: 'institucional', 
       tecnologias: ['Apresentação', 'Responsivo', 'Ensino'] 
     },
