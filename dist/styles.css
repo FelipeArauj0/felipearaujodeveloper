@@ -9,3 +9,6 @@
 .preview-controls button{border:0;background:none;color:var(--accent);padding:4px 0;font-size:12px;text-decoration:underline;text-underline-offset:3px}
 .preview-controls a{color:var(--accent)}
 .preview-empty{display:flex;align-items:center;justify-content:center;height:100%;margin:0;padding:25px;color:var(--muted);text-align:center;font-size:14px}
+
+/* Capturas completas, sem recortar o conteúdo do projeto. */
+.project-preview .project-image > img{object-fit:contain}

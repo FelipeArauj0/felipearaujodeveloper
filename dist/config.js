@@ -18,10 +18,11 @@ window.PORTFOLIO = {
   // Ao preencher url, o botão passa a ser “Ver site”.
   projetos: [
     { 
-      titulo: 'Seu site institucional', 
+      titulo: 'CapacitaAI', 
       categoria: 'Site institucional', 
-      descricao: 'Uma apresentação clara para sua empresa, serviços e canais de contato.', 
-      imagem: 'assets/capacitaAI.png', 
+      descricao: 'Capacitação gratuita para o mercado de trabalho, com orientação prática e inteligência artificial.', 
+      imagem: 'assets/capacita-preview.png',
+      preview: 'imagem', 
       url: 'https://capacita-ai-flow-daaox5kti-felipes-projects-af697b65.vercel.app/', modelo: 'institucional', 
       tecnologias: ['Apresentação', 'Responsivo', 'Ensino'] 
     },
