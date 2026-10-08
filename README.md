@@ -9,8 +9,9 @@ Edite **dist/config.js**. Ele concentra nome, profissão, foto, WhatsApp, e-mail
 Preencha `whatsapp` com seu número completo, somente dígitos: país 55, DDD e número. Enquanto o campo estiver vazio, o botão avisa que o contato ainda não foi disponibilizado, sem encaminhar para um número fictício.
 
 ### Adicionar um site
-1. Salve uma captura de tela em `dist/assets`, por exemplo `meu-site.jpg`.
-2. Duplique um objeto da lista `projetos` e preencha:
+1. Copie o endereço público do site (HTTPS, de preferência o domínio de produção).
+2. Opcionalmente, salve uma captura em `dist/assets` para usar como alternativa.
+3. Duplique um objeto da lista `projetos` e preencha:
 
 ```js
 {
@@ -90,3 +91,27 @@ No projeto da Vercel, confira em **Settings → Build and Deployment**:
 A raiz deve ser o repositório para que a Vercel leia o `vercel.json`. Com o GitHub conectado à Vercel, commits na branch de produção configurada podem disparar novas publicações. Se não houver nova publicação automática, faça **Redeploy** usando o commit mais recente de `main`. A configuração vale para novas publicações; uma publicação antiga não é alterada retroativamente.
 
 Se aparecer 404, confirme o Root Directory e o Output Directory. Se a publicação falhar, consulte o Build Log. O endereço e os logs da publicação na conta Vercel não foram verificados a partir deste repositório.
+
+## Prévia ao vivo a partir do link
+
+Ao preencher `url`, o cartão carrega o site em um iframe reduzido. Não é preciso enviar uma captura de tela. Exemplo:
+
+```js
+{
+  titulo: 'Meu projeto',
+  categoria: 'Aplicação web',
+  descricao: 'Descrição do projeto.',
+  url: 'https://endereco-publico-do-site.com',
+  imagem: '', // opcional
+  tecnologias: ['HTML', 'CSS', 'JavaScript']
+}
+```
+
+- A prévia busca o conteúdo do endereço quando é carregada. Não é uma captura automática nem uma transmissão contínua; atualize a página para carregar alterações do site.
+- Salvar o link no código exige uma nova publicação na Vercel para aparecer aos visitantes.
+- Use links públicos de produção. Links privados, protegidos por login ou de deploys antigos podem falhar.
+- Alguns sites bloqueiam iframes com `X-Frame-Options` ou `Content-Security-Policy: frame-ancestors`. Este portfólio não contorna essas restrições.
+- O navegador não permite detectar de forma confiável uma falha em iframe de outra origem. Por isso há uma alternativa manual: **Ver imagem** ou **Prévia não abriu?**.
+- A imagem opcional deve existir em `dist/assets` e o nome precisa coincidir, inclusive maiúsculas e minúsculas.
+- Para usar apenas imagem em determinado projeto, adicione `preview: 'imagem'`. O botão **Tentar prévia ao vivo** continua disponível.
+- Para navegar e interagir com o projeto, use **Ver site**. O iframe é apenas uma prévia visual.
