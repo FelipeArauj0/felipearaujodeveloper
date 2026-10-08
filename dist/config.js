@@ -18,6 +18,15 @@ window.PORTFOLIO = {
   // Ao preencher url, o botão passa a ser “Ver site”.
   projetos: [
     { 
+      titulo: 'Convite Digital 15 anos', 
+      categoria: 'Convite digital', 
+      descricao: 'Convite digital para festa de 15 anos, com informações do evento e confirmação de presença.', 
+      imagem: '', 
+      url: 'https://isabela-15-anos.vercel.app/', 
+      modelo: 'app', 
+      tecnologias: ['Interface', 'Web'] 
+    },
+    { 
       titulo: 'CapacitaAI', 
       categoria: 'Site institucional', 
       descricao: 'Capacitação gratuita para o mercado de trabalho, com orientação prática e inteligência artificial.', 
@@ -27,22 +36,13 @@ window.PORTFOLIO = {
       tecnologias: ['Apresentação', 'Responsivo', 'Ensino'] 
     },
     { 
-      titulo: 'Sua landing page', 
-      categoria: 'Landing page', 
-      descricao: 'Uma página focada em apresentar uma solução e conectar pessoas ao seu negócio.', 
+      titulo: 'Sistema de Agendamento Online', 
+      categoria: 'SasS', 
+      descricao: 'Sistema de agendamento online para empresas e profissionais autônomos, notificações e organização de fila.', 
       imagem: '', 
-      url: '', 
-      modelo: 'landing', 
-      tecnologias: ['Página única', 'Contato'] 
-    },
-    { 
-      titulo: 'Sua aplicação web', 
-      categoria: 'Aplicação web', 
-      descricao: 'Um espaço para apresentar sistemas, plataformas e outras soluções digitais.', 
-      imagem: '', 
-      url: '', 
-      modelo: 'app', 
-      tecnologias: ['Interface', 'Web'] 
+      url: 'https://kyros-agenda-nine.vercel.app/', 
+      modelo: 'saas', 
+      tecnologias: ['Agendamento', 'Notificações', 'Organização'] 
     }
   ]
 };
