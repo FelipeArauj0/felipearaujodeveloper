@@ -10,16 +10,18 @@ document.querySelectorAll('.close,.dismiss').forEach(b => b.addEventListener('cl
 dialog.addEventListener('click', e => { if(e.target === dialog) { const r=dialog.getBoundingClientRect(); if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) dialog.close(); }});
 document.querySelectorAll('[data-nome]').forEach(e => e.textContent = c.nome);
 document.querySelectorAll('[data-profissao]').forEach(e => e.textContent = c.profissao);
-document.querySelector('#foto').src = c.foto;
-document.querySelector('#foto').alt = c.nome + ' com seu notebook';
+const foto = document.querySelector('#foto');
+if (foto) { foto.src = c.foto; foto.alt = c.nome + ' com seu notebook'; }
 document.querySelector('#ano').textContent = new Date().getFullYear();
 const wa = document.querySelector('#whatsapp');
 const numero = c.whatsapp.replace(/\D/g, '');
+if (wa) {
 if(numero) { wa.href = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(c.mensagemWhatsApp); wa.target='_blank'; wa.rel='noopener noreferrer'; }
 else wa.addEventListener('click',e=>{e.preventDefault();aviso('Contato em breve','O número de WhatsApp ainda não foi disponibilizado neste portfólio.');});
-if(c.email) { const e=document.querySelector('#email');e.hidden=false;e.href='mailto:'+c.email; }
+}
+if(c.email) { const e=document.querySelector('#email');if(e){e.hidden=false;e.href='mailto:'+c.email;} }
 function urlValida(url){ try { return ['https:','http:'].includes(new URL(url,location.href).protocol); } catch {return false;} }
-for(const [label,url] of [['GitHub',c.github],['LinkedIn',c.linkedin]]) if(url && urlValida(url)){ const a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';document.querySelector('#socials').append(a); }
+for(const [label,url] of [['GitHub',c.github],['LinkedIn',c.linkedin]]) if(url && urlValida(url) && document.querySelector('#socials')){ const a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';document.querySelector('#socials').append(a); }
 function mock(tipo){
  const box=document.createElement('div');box.className='mock';box.setAttribute('aria-hidden','true');
  const demos={institucional:'<div class="mock-nav"><b>studio.</b><span>Sobre &nbsp; Serviços &nbsp; Contato</span></div><div class="mock-title">Uma boa ideia.<br>Uma nova presença.</div><span class="mock-button">Conheça nossa empresa</span>',landing:'<div class="mock-nav"><b>nova /</b><span>Uma ideia. Novas possibilidades.</span></div><div class="mock-title">Seu próximo passo<br>começa aqui.</div><span class="mock-button">Quero conhecer</span>',app:'<div class="mock-nav"><b>workspace</b><span>Visão geral</span></div><div class="stats"><b><small>Projetos</small>12</b><b><small>Concluídos</small>08</b><b><small>Em andamento</small>04</b></div><div class="bars"><i style="height:35%"></i><i style="height:55%"></i><i style="height:45%"></i><i style="height:80%"></i><i style="height:65%"></i><i style="height:100%"></i></div>'};
@@ -119,7 +121,11 @@ function previewProjeto(p, real) {
   return box;
 }
 
-c.projetos.forEach((p,i)=>{
+const todosProjetos = Array.isArray(c.projetos) ? c.projetos : [];
+const paginaCompleta = document.body.dataset.page === 'projects';
+const projetosVisiveis = paginaCompleta ? todosProjetos : todosProjetos.slice(0, 3);
+
+projetosVisiveis.forEach((p,i)=>{
  const real=Boolean(p.url && urlValida(p.url));
  const article=document.createElement('article');article.className='project';
  const visual=previewProjeto(p,real);
@@ -133,3 +139,24 @@ c.projetos.forEach((p,i)=>{
  if(real){action.href=p.url;action.target='_blank';action.rel='noopener noreferrer';}else action.addEventListener('click',()=>aviso(p.titulo,p.descricao+' Este espaço demonstra a apresentação de um projeto. O site correspondente ainda não foi adicionado.','MODELO DE PROJETO'));
  body.append(meta,title,desc,tags,action);article.append(visual,body);document.querySelector('#project-list').append(article);
 });
+
+const listaProjetos = document.querySelector('#project-list');
+if (!paginaCompleta && todosProjetos.length > 3) {
+  const container = document.createElement('div');
+  container.className = 'more-projects';
+  const link = document.createElement('a');
+  link.className = 'button primary';
+  link.href = 'projetos.html';
+  link.textContent = 'Ver mais';
+  link.setAttribute('aria-label', 'Ver todos os ' + todosProjetos.length + ' projetos');
+  container.append(link);
+  listaProjetos.after(container);
+}
+const contador = document.querySelector('#project-count');
+if (contador) contador.textContent = todosProjetos.length + (todosProjetos.length === 1 ? ' projeto' : ' projetos');
+if (!todosProjetos.length) {
+  const vazio = document.createElement('p');
+  vazio.className = 'projects-empty';
+  vazio.textContent = 'Novos projetos serão apresentados aqui em breve.';
+  listaProjetos.append(vazio);
+}
