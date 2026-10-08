@@ -160,3 +160,40 @@ if (!todosProjetos.length) {
   vazio.textContent = 'Novos projetos serão apresentados aqui em breve.';
   listaProjetos.append(vazio);
 }
+
+/* Contato sempre disponível, sem duplicar a chamada da seção de contato. */
+function adicionarWhatsAppFlutuante() {
+  if (!numero) return;
+  const flutuante = document.createElement('a');
+  flutuante.className = 'whatsapp-floating';
+  flutuante.href = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(c.mensagemWhatsApp || '');
+  flutuante.target = '_blank';
+  flutuante.rel = 'noopener noreferrer';
+  flutuante.setAttribute('aria-label', 'Conversar com ' + c.nome + ' no WhatsApp (abre em nova aba)');
+  flutuante.title = 'Conversar no WhatsApp';
+  flutuante.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20l1.2-4.1A8.5 8.5 0 1 1 20 11.5Z"/><path d="M8 7.5c.5 4 3 6.5 7 7l1-2-2-1-1 1c-1.5-.7-2.6-1.8-3.3-3.3l1-1-1-2Z"/></svg>';
+  const contato = document.querySelector('#contato');
+  const definirVisibilidade = contatoVisivel => {
+    if (contatoVisivel && document.activeElement === flutuante && wa) {
+      wa.focus({ preventScroll: true });
+    }
+    flutuante.hidden = contatoVisivel;
+  };
+  const verificarPosicao = () => {
+    if (!contato) return;
+    const r = contato.getBoundingClientRect();
+    definirVisibilidade(r.bottom > 0 && r.top < window.innerHeight);
+  };
+  verificarPosicao();
+  document.body.append(flutuante);
+  if (contato && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      definirVisibilidade(entries[0].isIntersecting);
+    }, { threshold: 0 });
+    observer.observe(contato);
+  } else if (contato) {
+    window.addEventListener('scroll', verificarPosicao, { passive: true });
+    window.addEventListener('resize', verificarPosicao);
+  }
+}
+adicionarWhatsAppFlutuante();
